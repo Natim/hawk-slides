@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2010 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Original slides: Marcin Wichary (mwichary@google.com)
+  Modifications: Ernest Delgado (ernestd@google.com)
+                 Alex Russell (slightlyoff@chromium.org)
+
+  landslide modifications: Adam Zapletal (adamzap@gmail.com)
+                           Nicolas Perriault (nperriault@gmail.com)
+-->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Hawk — Pytong 2014</title>
+    <!-- Styles -->
+    
+    <link rel="stylesheet" media="print" href="mozilla/css/print.css">
+    <link rel="stylesheet" media="screen, projection" href="mozilla/css/screen.css">
+    
+    
+    <!-- /Styles -->
+    <!-- Javascripts -->
+    
+    <script type="text/javascript" src="mozilla/js/slides.js"></script>
+    
+    
+    <!-- /Javascripts -->
+</head>
+<body>
+  <div id="blank"></div>
+  <div class="presentation">
+    <div id="current_presenter_notes">
+      <div id="presenter_note"></div>
+    </div>
+    <div class="slides">
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Hawk — Pytong 2014</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              1/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            
+            <section><img alt="logo.png" src="logo.png" />
+<p class="center"><strong>Authenticate your HTTP requests</strong></p>
+<p class="center">Rémy Hubscher - <a class="reference external" href="mailto:natim&#64;mozilla.com">natim&#64;mozilla.com</a> - &#64;natim</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              2/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>How does Authentication works?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              3/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>How does Authentication works?</h1></header>
+            
+            
+            <section><ol class="arabic simple">
+<li>The client register to get a session (usually <cite>POST /login</cite> with login/password)</li>
+<li>The server get back a session (usually using a <cite>Set-Cookie</cite> header)</li>
+<li>We use this session on each HTTP request (usually header <cite>Cookie</cite>, <cite>Authorization</cite>)</li>
+<li>We use POST /logout to destroy the session</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              4/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>How does Hawk works?</h1></header>
+            
+            
+            <section><ol class="arabic simple">
+<li>The client register to get a session</li>
+<li>The server store a new Hawk account with an id and a key and return it to the client.</li>
+<li>Each time the client make a new request, he builds the Authorization header.</li>
+<li>Each time the server answers he builds the Server-Authorization header back.</li>
+</ol></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              5/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Hawk credentials</h1></header>
+            
+            
+            <section><p>This are the hawk credentials:</p>
+<pre><span class="l-Scalar-Plain">id</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dh37fgj492je</span>
+<span class="l-Scalar-Plain">key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn</span>
+<span class="l-Scalar-Plain">algorithm</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sha256</span>
+</pre>
+<p>Basicaly an <strong>id</strong>, <strong>key</strong> and <strong>algorithm</strong>.</p>
+<p>Mozilla defined the <strong>Hawk-Session-Token</strong> protocol to let you share this
+credentials in a protected way.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              6/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>The Hawk-Session-Token sharing protocol</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>You create a new <strong>Hawk-Session-Token</strong> as a hex string of 16 random bytes that you can share and store.</li>
+<li>Then you use the <strong>HKDF</strong> sha256 algorithm to get a 32 bytes long string.</li>
+<li>The 16 first bytes are the credentials id</li>
+<li>The 16 last bytes are the credentials key</li>
+</ul>
+<p>The derivation keyword for this protocol is set to &quot;identity.mozilla.com/picl/v1/sessionToken&quot;</p>
+<p>Note that an hex digit is called a nibble and that a byte is made of two nibble.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              7/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>The Hawk-Session-Token sharing protocol</h1></header>
+            
+            
+            <section><pre><span class="k">def</span> <span class="nf">get_hawk_credentials</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s">&quot;hex_codec&quot;</span><span class="p">)</span>
+
+    <span class="c"># sessionToken protocol HKDF keyInfo.</span>
+    <span class="n">keyInfo</span> <span class="o">=</span> <span class="s">&#39;identity.mozilla.com/picl/v1/sessionToken&#39;</span>
+    <span class="n">keyMaterial</span> <span class="o">=</span> <span class="n">HKDF</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">keyInfo</span><span class="p">,</span> <span class="mi">32</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">token</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="s">&quot;hex_codec&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">token</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">codecs</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">keyMaterial</span><span class="p">[:</span><span class="mi">32</span><span class="p">],</span> <span class="s">&quot;hex_codec&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">),</span>
+        <span class="s">&#39;key&#39;</span><span class="p">:</span> <span class="n">codecs</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">keyMaterial</span><span class="p">[</span><span class="mi">32</span><span class="p">:</span><span class="mi">64</span><span class="p">],</span> <span class="s">&quot;hex_codec&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">),</span>
+        <span class="s">&#39;algorithm&#39;</span><span class="p">:</span> <span class="s">&#39;sha256&#39;</span>
+    <span class="p">}</span>
+</pre>
+<p><a class="reference external" href="https://github.com/spiral-project/daybed/tree/master/daybed/tokens.py">https://github.com/spiral-project/daybed/tree/master/daybed/tokens.py</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              8/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>HTTP Hawk Authorization header</h1></header>
+            
+            
+            <section><pre><span class="nf">GET</span> <span class="nn">/resource/1?b=1&amp;a=2</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">example.com:8000</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Hawk id=&quot;dh37fgj492je&quot;, \</span>
+                    <span class="l">ts=&quot;1353832234&quot;, \</span>
+                    <span class="l">nonce=&quot;j4h3g2&quot;, \</span>
+                    <span class="l">ext=&quot;some-app-ext-data&quot;, \</span>
+                    <span class="l">mac=&quot;6R4rV5iE+NPoym+WwjeHzjAGXUtLNIxmo1vpMofpLAE=&quot;</span>
+</pre>
+<ul class="simple">
+<li><strong>id</strong> is the credentials id given on registration</li>
+<li><strong>ts</strong> is the exact timestamp of the request, this prevent from replay.</li>
+<li><strong>nonce</strong> is a random value added to the request</li>
+<li><strong>mac</strong> is the signature of the request being send to the server with the credentials key.</li>
+</ul>
+<p>Two others optional parameters may be added to this:</p>
+<ul class="simple">
+<li><strong>hash</strong> which is an hash of the request payload (POST)</li>
+<li><strong>ext</strong> which is some app specific data that can be defined</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              9/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>HTTP Hawk Authorization header</h1></header>
+            
+            
+            <section><p>The mac is built using a hash of this information:</p>
+<pre>hawk.1.header                  |    hawk.1.header
+{timestamp}                    |    1353832234
+{nonce}                        |    j4h3g2
+{method}                       |    GET
+{path-with-querystring}        |    /resource/1?b=1&amp;a=2
+{host}                         |    example.com
+{port}                         |    8000
+{hash}                         |
+{ext}                          |    some-app-ext-data
+</pre>
+<p>This is hmac-ed using the credentials algorithm and the credentials
+key and provided as a base64 string.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              10/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>HTTP Server-Authorization header</h1></header>
+            
+            
+            <section><p>The payload hash is calculated in sha256 and returned as base64 using:</p>
+<pre>hawk.1.payload
+text/plain
+Thank you for flying Hawk
+</pre>
+<p>Which gives us:</p>
+<pre class="literal-block">
+Yi9LfIIFRtBEPt74PVmbTF/xVAwPn7ub15ePICfgnuY=
+</pre>
+<p>The good thing with Hawk is that the server also provides you a
+response signature using the same credentials.</p>
+<pre>Server-Authorization: Hawk \
+   mac=&quot;XIJRsMl/4oL+nn+vKoeVZPdCHXB4yJkNnBbTbHFZUYE=&quot;, \
+   hash=&quot;f9cDF/TDm7TkYRLnGwRMfeDzT6LixQVLvrIKhh0vgmM=&quot;, \
+   ext=&quot;response-specific&quot;
+</pre></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              11/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Using Hawk in your projects</h1></header>
+            
+            
+            <section><p><strong>When should I use it?</strong></p>
+<ul class="simple">
+<li>You should really consider working with Hawk for web services API.</li>
+</ul>
+<p><strong>Should I use it in my website?</strong></p>
+<ul class="simple">
+<li>No for the user front-end but as soon as you have an web API: YES</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              12/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Why is it better to use Hawk?</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>Better security, capturing the request is not enough to use the session.</li>
+<li>Protection against replay attack, because of the timestamp and the nonce.</li>
+<li>Payload signature, the payload received is the one sent by your client.</li>
+<li>No cookie management.</li>
+</ul>
+<p>And this even without using SSL.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              13/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>An example with node</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              14/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>With node</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>We use <strong>express-hawk</strong> to build the express middleware</li>
+<li>Configure how we <strong>store the user</strong> in the database</li>
+<li>Configure how we <strong>get the user</strong> from the database</li>
+<li>Configure how we <strong>provision the request</strong> with new parameters</li>
+<li>Configure all the <strong>hawk options</strong></li>
+<li>Test using <strong>superagent-hawk</strong></li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              15/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>An example with python</h1></header>
+            
+            
+            <section><p>We are using <strong>pyramid_hawkauth</strong>.HawkAuthenticationPolicy with <strong>cornice</strong></p>
+<p>For client code we are using <strong>requests-hawk</strong></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              16/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Javascript client usage</h1></header>
+            
+            
+            <section><p>The Hawk javascript library: <a class="reference external" href="https://www.npmjs.org/package/hawk">https://www.npmjs.org/package/hawk</a></p>
+<p>This gives you:</p>
+<pre><span class="kd">var</span> <span class="nx">hawk</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;hawk&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">credentials</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+  <span class="nx">key</span><span class="o">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+  <span class="nx">algorithm</span><span class="o">:</span> <span class="s2">&quot;sha256&quot;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">hawkHeader</span> <span class="o">=</span> <span class="nx">hawk</span><span class="p">.</span><span class="nx">client</span><span class="p">.</span><span class="nx">header</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">method</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">credentials</span><span class="o">:</span> <span class="nx">credentials</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">req</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+<span class="nx">req</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+<span class="nx">req</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;Accept&#39;</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+<span class="nx">req</span><span class="p">.</span><span class="nx">responseType</span> <span class="o">=</span> <span class="s1">&#39;json&#39;</span><span class="p">;</span>
+<span class="nx">req</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="mi">15000</span><span class="p">;</span>
+
+<span class="nx">req</span><span class="p">.</span><span class="nx">setRequestHeader</span><span class="p">(</span><span class="s1">&#39;Authorization&#39;</span><span class="p">,</span> <span class="nx">hawkHeader</span><span class="p">.</span><span class="nx">field</span><span class="p">);</span>
+</pre>
+<p><a class="reference external" href="https://github.com/spiral-project/daybed.js/tree/master/index.js">https://github.com/spiral-project/daybed.js/tree/master/index.js</a></p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              17/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>OpenSource projet: daybed</h1></header>
+            
+            
+            <section><p><strong>daybed</strong> is a remote storage with data validation and sync in
+between users and devices.</p>
+<p>You want to use daybed each time you have an APP (HTML5 or not) with
+a desire of cross devices / users usage.</p>
+<blockquote>
+<ul class="simple">
+<li>Doodle</li>
+<li>Google Forms</li>
+<li>Participative map</li>
+<li>FirefoxOS app</li>
+<li>Todo list (trello)</li>
+</ul>
+</blockquote>
+<p>With <strong>daybed</strong> you don't need to code another backend for your app.</p></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              18/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>Why Hawk for daybed?</h1></header>
+            
+            
+            <section><ul class="simple">
+<li>OpenSource project, people might use it without SSL.</li>
+<li>Token are meaning less and can refer to Device, User, Groups or the three of them</li>
+<li>With the Hawk-Session-Token you don't have to store anything more than a session token.</li>
+</ul></section>
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              19/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+      <!-- slide source: index.rst -->
+      <div class="slide-wrapper">
+        <div class="slide">
+          <div class="inner">
+            
+            <header><h1>So, should you use Hawk?</h1></header>
+            
+            
+          </div>
+          <div class="presenter_notes">
+            <header><h1>Presenter Notes</h1></header>
+            <section>
+            
+            </section>
+          </div>
+          <footer>
+            
+            <aside class="source">
+              Source: <a href="index.rst">index.rst</a>
+            </aside>
+            
+            <aside class="page_number">
+              20/20
+            </aside>
+          </footer>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div id="toc" class="sidebar hidden">
+    <h2>Table of Contents</h2>
+    <table>
+      <caption>Table of Contents</caption>
+      
+      <tr id="toc-row-1">
+        <th><a href="#slide1">Hawk — Pytong 2014</a></th>
+        <td><a href="#slide1">1</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-2">
+        <th><a href="#slide2">-</a></th>
+        <td><a href="#slide2">2</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-3">
+        <th><a href="#slide3">How does Authentication works?</a></th>
+        <td><a href="#slide3">3</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-4">
+        <th><a href="#slide4">How does Authentication works?</a></th>
+        <td><a href="#slide4">4</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-5">
+        <th><a href="#slide5">How does Hawk works?</a></th>
+        <td><a href="#slide5">5</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-6">
+        <th><a href="#slide6">Hawk credentials</a></th>
+        <td><a href="#slide6">6</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-7">
+        <th><a href="#slide7">The Hawk-Session-Token sharing protocol</a></th>
+        <td><a href="#slide7">7</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-8">
+        <th><a href="#slide8">The Hawk-Session-Token sharing protocol</a></th>
+        <td><a href="#slide8">8</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-9">
+        <th><a href="#slide9">HTTP Hawk Authorization header</a></th>
+        <td><a href="#slide9">9</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-10">
+        <th><a href="#slide10">HTTP Hawk Authorization header</a></th>
+        <td><a href="#slide10">10</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-11">
+        <th><a href="#slide11">HTTP Server-Authorization header</a></th>
+        <td><a href="#slide11">11</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-12">
+        <th><a href="#slide12">Using Hawk in your projects</a></th>
+        <td><a href="#slide12">12</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-13">
+        <th><a href="#slide13">Why is it better to use Hawk?</a></th>
+        <td><a href="#slide13">13</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-14">
+        <th><a href="#slide14">An example with node</a></th>
+        <td><a href="#slide14">14</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-15">
+        <th><a href="#slide15">With node</a></th>
+        <td><a href="#slide15">15</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-16">
+        <th><a href="#slide16">An example with python</a></th>
+        <td><a href="#slide16">16</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-17">
+        <th><a href="#slide17">Javascript client usage</a></th>
+        <td><a href="#slide17">17</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-18">
+        <th><a href="#slide18">OpenSource projet: daybed</a></th>
+        <td><a href="#slide18">18</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-19">
+        <th><a href="#slide19">Why Hawk for daybed?</a></th>
+        <td><a href="#slide19">19</a></td>
+      </tr>
+      
+      
+      <tr id="toc-row-20">
+        <th><a href="#slide20">So, should you use Hawk?</a></th>
+        <td><a href="#slide20">20</a></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  <div id="help" class="sidebar hidden">
+    <h2>Help</h2>
+    <table>
+      <caption>Help</caption>
+      <tr>
+        <th>Table of Contents</th>
+        <td>t</td>
+      </tr>
+      <tr>
+        <th>Exposé</th>
+        <td>ESC</td>
+      </tr>
+      <tr>
+        <th>Full screen slides</th>
+        <td>e</td>
+      </tr>
+      <tr>
+        <th>Presenter View</th>
+        <td>p</td>
+      </tr>
+      <tr>
+        <th>Source Files</th>
+        <td>s</td>
+      </tr>
+      <tr>
+        <th>Slide Numbers</th>
+        <td>n</td>
+      </tr>
+      <tr>
+        <th>Toggle screen blanking</th>
+        <td>b</td>
+      </tr>
+      <tr>
+        <th>Show/hide slide context</th>
+        <td>c</td>
+      </tr>
+      <tr>
+        <th>Notes</th>
+        <td>2</td>
+      </tr>
+      <tr>
+        <th>Help</th>
+        <td>h</td>
+      </tr>
+    </table>
+  </div>
+  <script>main()</script>
+</body>
+</html>
