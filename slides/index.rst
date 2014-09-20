@@ -184,7 +184,7 @@ Using Hawk in your projects
 
 **Should I use it in my website?**
 
-- No for the user front-end but as soon as you have an web API: YES
+- No, for the user front-end but as soon as you have an web API: YES
 
 ----
 
@@ -287,5 +287,5 @@ Why Hawk for daybed?
 
 ----
 
-So, should you use Hawk?
-========================
+So, will you use Hawk?
+======================
