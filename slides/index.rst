@@ -196,7 +196,8 @@ Why is it better to use Hawk?
 - Payload signature, the payload received is the one sent by your client.
 - No cookie management.
 
-And this even without using SSL.
+And this even without using SSL also you will still need it to get the
+key or protect the payload.
 
 ----
 
